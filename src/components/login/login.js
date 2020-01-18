@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './login.css';
 
  export class Login  extends React.Component {
@@ -58,13 +59,8 @@ import './login.css';
                     
                       ['msg']:err.message ,
                       ['isDirty']: err.isTouched
-                  }
-                  
-                   
-               
-
-            }
-            
+                  } 
+            }            
         }), () => {this.validateForm()})
     }
 
@@ -130,16 +126,16 @@ import './login.css';
                 <form className="form-group" onSubmit={this.handleClick}>
                     <label htmlFor="username">Username</label>
                     <input type="text" placeholder="Username" name="username" onChange={this.handleChange} id="username" className="form-control" />
-                    <p>{this.state.error.username.msg}</p>
+                    <p className='msg'>{this.state.error.username.msg}</p>
                     <label htmlFor="password">Password</label>
                     <input type="password" placeholder="Password" name="password" onChange={this.handleChange} id="password" className="form-control" />
-                    <p>{this.state.error.password.msg}</p>
+                    <p className='msg'>{this.state.error.password.msg}</p>
                     <br/>
                     {btn}
                 </form>
                 <p>Don't have an account?</p>
-                <p>Register <a href="/register">here</a></p>
-                <p><a href="/forgot-password">Forgot password?</a></p>
+                <p>Register <Link to="/register">here</Link></p>
+                <p><Link to="/forgot-password">Forgot password?</Link></p>
             </div>
             
             </>

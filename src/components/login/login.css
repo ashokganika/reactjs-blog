@@ -6,3 +6,7 @@
     border-width: 2px;
     border-color: black;
 }
+
+.msg {
+    color:red;
+}

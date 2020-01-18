@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './register.css';
 
 const formData = {
@@ -41,8 +42,7 @@ export class Register extends React.Component {
             }
         }), ()=>{this.validateInput(name)})
         
-    }
-    
+    }    
     
     validateInput = (Fieldname) => {
         // console.log(this.state.data)
@@ -101,8 +101,7 @@ export class Register extends React.Component {
         })
 
        
-    }
-    
+    }    
 
     onHandleSubmit = (e) => {
         e.preventDefault();
@@ -125,9 +124,7 @@ export class Register extends React.Component {
             :
             <button disabled={!this.state.isValid} className="btn btn-info my-4 btn-block" type="submit">Sign in</button>
             
-        return (
-           
-           
+        return ( 
             <>
                
                 <form className="text-center border border-light p-5" onSubmit={this.onHandleSubmit} noValidate>
@@ -189,7 +186,7 @@ export class Register extends React.Component {
                         
                    
                 </form>
-
+                <p>already registered? <Link to='/login'>Sign In</Link></p>
 
             </>
         )

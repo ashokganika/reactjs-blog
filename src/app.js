@@ -1,6 +1,7 @@
 import React from 'react';
-import { Login} from './components/login/login';
-// import { Register } from './components/register/register';
+import Routing from './routing';
+// import { Login} from './components/login/login';
+// // import { Register } from './components/register/register';
 
 // export function App(props){
 //     return(
@@ -18,7 +19,7 @@ export class Apps extends React.Component {
     render(){
         return(
             <>
-                <Login/>
+                <Routing/>
             </>
         )
     }
