@@ -1,57 +1,106 @@
 import React from 'react';
-import ReactDom from 'react-dom';
 import './login.css';
 
  export class Login  extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            username: '',
-            password: '',
-            usernameErr: '',
-            passwordErr: '',
-            count: 0
-          }
+            data: {
+                username: '',
+                password: '',
+            },
+            error: {
+                username: {
+                    msg: '',
+                    isDirty: false
+                },
+                password: {
+                    msg: '',
+                    isDirty: false
+                }
+            },
+            isSubmitting: false,
+            isValidForm: false
+        }
     }   
 
-    handleChange(e){
+    handleChange = (e) => {
         const {name, value} = e.target;
-        //console.log(name, value);
-        this.setState({
-            [name]: value
-        })
+        
+        // console.log(name, value);
+        this.setState((previousState) => ({
+            data:{
+                ...previousState.data,
+                [name]: value
+            }
+            
+        }), ()=>{this.validateError(name)})
+    }
 
-       
-    }   
-    
-    validateForm(fieldName){
+    validateError(fieldName){
+        // console.log(this.state)
         let err;
         switch (fieldName) {            
             case 'username':
-                 err = this.state.username ? '' : 'username is required'
+                err = this.state.data[fieldName] ? {message: '', isTouched: true} : {message: 'username is required', isTouched: false}                     
                 break;
-        
+            case 'password':
+                err= this.state.data[fieldName] ? {message: '', isTouched: true} : {message: 'password is required', isTouched: false}
+                break;
             default:
                 break;
         }
 
-        this.setState({
-            usernameErr: err
-        })
+        this.setState((previousState) => ({
+            error: { 
+                ...previousState.error,
+                  [fieldName] :{
+                    
+                      ['msg']:err.message ,
+                      ['isDirty']: err.isTouched
+                  }
+                  
+                   
+               
+
+            }
+            
+        }), () => {this.validateForm()})
     }
+
+    validateForm = () => {
+        // console.log(this.state)
+        // const err = Object.values(this.state.error);
+        // console.log(err.msg);
+        let isValid = (this.state.error.username.isDirty && this.state.error.password.isDirty) ? true : false;
+        this.setState({
+            isValidForm: isValid
+            
+        }, ()=>{console.log(this.state)})               
+    }
+
     handleClick = (e) => {
         e.preventDefault();
+        this.setState({
+            isSubmitting: true
+        })
+
+        setTimeout(()=>{
+            this.setState({
+                isSubmitting: false
+            })
+        },3000)
       
         
     }
     
 
     componentWillMount(){
-        console.log("before rendering");
+        // console.log("before rendering");
     }
 
     componentDidMount(){
-        console.log("after sucessful rendering");
+        // console.log("after sucessful rendering");
     
        
     }
@@ -59,7 +108,7 @@ import './login.css';
     componentDidUpdate(props, previousState){
         // console.log(props);
         //  console.log(previousState);
-        console.log(this.state);
+        // console.log(this.state);
 
     }
 
@@ -69,19 +118,24 @@ import './login.css';
     
 
     render() { 
-        console.log('render');
+        let btn = (this.state.isSubmitting) 
+        ? <button disabled className="btn btn-info" >Logging...</button>
+        : <button className="btn btn-primary" disabled={!this.state.isValidForm} >Login</button>
         return ( 
             <>
+            <h2 style={{textAlign:"center"}}>Please Login To continue</h2>
             <div className="container">
                 <h2>Welcome to Login Page</h2>
-                <p>Button clicked {this.state.count} times</p>
-                <form className="form-group">
+                
+                <form className="form-group" onSubmit={this.handleClick}>
                     <label htmlFor="username">Username</label>
-                    <input type="text" placeholder="Username" name="username" onChange={this.handleChange.bind(this)} id="username" className="form-control" />
-                    <p>{this.state.usernameErr}</p>
+                    <input type="text" placeholder="Username" name="username" onChange={this.handleChange} id="username" className="form-control" />
+                    <p>{this.state.error.username.msg}</p>
                     <label htmlFor="password">Password</label>
-                    <input type="password" placeholder="Password" name="password" onChange={this.handleChange.bind(this)} id="password" className="form-control" /><br></br>
-                    <button className="btn btn-primary" onClick={this.handleClick}>Login</button>
+                    <input type="password" placeholder="Password" name="password" onChange={this.handleChange} id="password" className="form-control" />
+                    <p>{this.state.error.password.msg}</p>
+                    <br/>
+                    {btn}
                 </form>
                 <p>Don't have an account?</p>
                 <p>Register <a href="/register">here</a></p>

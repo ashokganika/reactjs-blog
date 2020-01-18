@@ -1,6 +1,6 @@
 import React from 'react';
-// import { Login} from './components/login/login';
-import { Register } from './components/register/register';
+import { Login} from './components/login/login';
+// import { Register } from './components/register/register';
 
 // export function App(props){
 //     return(
@@ -18,7 +18,7 @@ export class Apps extends React.Component {
     render(){
         return(
             <>
-                <Register/>
+                <Login/>
             </>
         )
     }

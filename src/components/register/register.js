@@ -89,7 +89,7 @@ export class Register extends React.Component {
     validateForm = () => {
         let formVaild;
         const isFormValid = Object.values(this.state.error).filter( err => err);
-        console.log(isFormValid.length);
+        // console.log(isFormValid.length);
         if (isFormValid.length){
            formVaild = false
         }
