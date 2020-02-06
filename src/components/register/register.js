@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import httpClient from './../../utils/http-client';
 import './register.css';
+import notification from '../../utils/notification';
+// import Axios from 'axios';
 
 const formData = {
     name: '',
@@ -13,9 +16,11 @@ const formData = {
     dob: '' 
 }
 
+
+
 export class Register extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             data: {
                 ...formData
@@ -109,11 +114,24 @@ export class Register extends React.Component {
             isSubmitting: true
         })
 
-        setTimeout( () => {
+        httpClient.post('/auth/register',this.state.data)
+        .then((data) => {
+            // console.log(data);
+            // console.log('i am sucessfull');
+            notification.showSuccess('Registration sucessfull');
             this.setState({
                 isSubmitting:false
-            })
-        }, 3000)
+            });
+            this.props.history.push('/');
+        })
+        .catch((err) => {
+            console.log(err.response);
+            this.setState({
+                isSubmitting:false
+                
+            });
+            notification.errorHandler(err);
+        })
        
     }
 

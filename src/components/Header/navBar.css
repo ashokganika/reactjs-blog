@@ -1,0 +1,10 @@
+.navbar{
+    list-style-type: none;
+    background-color: rgb(21, 9, 94);
+
+}
+
+.nav-item{
+    display: inline-block;
+    
+}

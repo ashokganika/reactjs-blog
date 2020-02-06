@@ -1,6 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './login.css';
+import httpClient from './../../utils/http-client';
+import Notification from './../../utils/notification';
+
+
 
  export class Login  extends React.Component {
     constructor(props){
@@ -72,7 +76,7 @@ import './login.css';
         this.setState({
             isValidForm: isValid
             
-        }, ()=>{console.log(this.state)})               
+        });               
     }
 
     handleClick = (e) => {
@@ -80,12 +84,28 @@ import './login.css';
         this.setState({
             isSubmitting: true
         })
-
-        setTimeout(()=>{
+       
+        httpClient.post('/auth/login',this.state.data)
+        .then((data) => {
+            // console.log(data);
+            // console.log(data.data);
+            Notification.showSuccess(`welcome ${data.data.user.username}`)
+            localStorage.setItem('user', JSON.stringify(data.data.user));
+            localStorage.setItem('token', data.data.token);
             this.setState({
                 isSubmitting: false
             })
-        },3000)
+           
+            this.props.history.push(`/`);
+           
+        })
+        .catch(err => {
+            this.setState({
+                isSubmitting: false
+            });
+            Notification.errorHandler(err);
+           
+        })
       
         
     }
@@ -114,7 +134,7 @@ import './login.css';
     
 
     render() { 
-        let btn = (this.state.isSubmitting) 
+        let btn = this.state.isSubmitting
         ? <button disabled className="btn btn-info" >Logging...</button>
         : <button className="btn btn-primary" disabled={!this.state.isValidForm} >Login</button>
         return ( 
