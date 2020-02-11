@@ -21,9 +21,8 @@ class AddFeed extends React.Component {
 
     handleChange = (e) => {
         let {type, name, value} = e.target;
-        console.log(type,name,value);
         if(type === 'file'){
-            value = 
+            value = e.target.files;
         }
         this.setState((prev) => ({
             data:{
@@ -79,26 +78,29 @@ class AddFeed extends React.Component {
            isSubmitting:true
        },() => { console.log(this.state.isSubmitting)});
 
-       
-       httpClient.post('/feed',this.state.data, true)
-       .then((data) => {
-           this.setState({
-               isSubmitting:false
-           })
-           notification.showSuccess('feed uploaded')
-           this.props.history.push('/view-feed');
-          
-       })
-       .catch(err => {
-        this.setState({
-            isSubmitting:false
+       httpClient.upload(
+           {
+               method:'POST',
+               url: `${process.env.REACT_APP_BASE_URL}/feed?token=${localStorage.getItem('token')}`,
+               file: this.state.data.image,
+               data: this.state.data
+            }
+        )
+        .then((data) => {
+            this.setState({
+                isSubmitting:false
+            })
+            notification.showSuccess('feed uploaded')
+            this.props.history.push('/view-feed');
+           
         })
-           notification.errorHandler(err);
-               
-       })
-     
-
-        
+        .catch(err => {
+         this.setState({
+             isSubmitting:false
+         })
+            notification.errorHandler(JSON.parse(err));
+                
+        })     
     }
     
     render() { 

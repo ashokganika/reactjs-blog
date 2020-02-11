@@ -17,12 +17,17 @@ function showWarning(msg){
 }
 
 function errorHandler(err){
-    console.log(err);
+    // console.log(err);
     debugger;
-    let error = err.response;
-    let msg = 'Something went wrong';
-    msg = error && error.data && error.data.msg;
-    showError(msg);
+    let error = err.response || err;
+    let msg;
+    if(error && error.response && error.response.msg){
+        msg = error.response.msg;
+    }
+    else if(error.msg){
+        msg = error.msg;
+    }
+    showError(msg || 'something wnet wrong');
 }
 
 export default {

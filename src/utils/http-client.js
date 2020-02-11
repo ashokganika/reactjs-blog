@@ -1,7 +1,5 @@
 import Axios from "axios";
 
-
-
 function getHeader(isSecure=false){
     let headers;
     if(isSecure){
@@ -44,14 +42,42 @@ function remove(url, isSecure){
     return http.delete(url, {headers:getHeader(isSecure)})
 }
 
-// fucntion upload({url, method, file, data}){
+function upload({url, method, file, data}){
+    return new Promise((resolve, reject) => {
+        let xhr = new XMLHttpRequest();
+        let formData = new FormData();
+        
+        if(file && file.length) {
+            formData.append('img', file[0], file[0].name);
+        }
 
-// }
+        for (let key in data){
+            formData.append(key, data[key]);
+        }
+        
+        xhr.onreadystatechange = () => {
+            if(xhr.readyState === 4){
+                if(xhr.status === 200){
+                    // console.log("respone is ready and it is okay>>> ",xhr.response);
+                    resolve(xhr.response);
+                }
+                else{
+                    // console.log("respone is ready>>> ",xhr.response);
+                    reject(xhr.response);
+                }
+            }    
+        }
+
+        xhr.open(method, url, true);
+        xhr.send(formData);
+    })
+}
 
 export default {
     post,
     get,
     edit,
     delete:remove,
+    upload
     
 }

@@ -31,6 +31,7 @@ class EditFeed extends React.Component {
             this.setState({
                 data:data.data
             })
+            // console.log(this.state.data);
         })
         .catch(err => {
             notification.errorHandler(err);
@@ -43,8 +44,10 @@ class EditFeed extends React.Component {
     }
 
     handleChange = (e) => {
-        const { name, value} = e.target;
-        // console.log(name,value);
+        let {type, name, value} = e.target;
+        if(type === 'file'){
+            value = e.target.files
+        }
         this.setState((prev) => ({
             data:{
                 ...prev.data,
@@ -95,29 +98,36 @@ class EditFeed extends React.Component {
 
     handleClick = (e) => {
         e.preventDefault();
+        let url = `${process.env.REACT_APP_BASE_URL}/feed/${this.state.data._id}?token=${localStorage.getItem('token')}`
        this.setState({
            isSubmitting:true
        });
 
-       
-       httpClient.edit(`/feed/${this.state.data._id}`,this.state.data, true)
-       .then((data) => {
-           this.setState({
-               isSubmitting:false
-           })
-           notification.showSuccess('feed Edited successfully');
-           this.props.history.push('/view-feed');
-          
-       })
-       .catch(err => {
-        this.setState({
-            isSubmitting:false
-        })
-           notification.errorHandler(err);
-               
-       })
-     
+       httpClient.upload(
+           {
+               method:'PUT',
+               url: url,
+               file: this.state.data['newImage'],
+               data: {...this.state.data, user:this.state.data.user._id}
 
+           }
+       )
+       .then((data) => {
+            this.setState({
+                isSubmitting:false
+            })
+            notification.showSuccess('feed Edited successfully');
+            this.props.history.push('/view-feed');
+            // console.log(data);
+       
+        })
+        .catch(err => {
+            this.setState({
+                isSubmitting:false
+            })
+                notification.errorHandler(JSON.parse(err));
+                
+        })
         
     }
     
@@ -140,7 +150,11 @@ class EditFeed extends React.Component {
                     <label htmlFor="description">Description</label>
                     <input type="description" placeholder="Add description here" name="description" value={this.state.data.description} onChange={this.handleChange} id="description" className="form-control" />
                     <p className='msg'>{this.state.error.description}</p>
+                    <label>Image</label><br/>
+                    <img src={`${process.env.REACT_APP_IMG_URL}/${this.state.data.image}`}  width="200px" height="200px" alt="feedimage" />
                     <br/>
+                    <label>Choose New Image</label><br/>
+                    <input type="file" className="form-control" name="newImage" onChange={this.handleChange} /><br/>
                     {btn}
                 </form> 
               </div>      

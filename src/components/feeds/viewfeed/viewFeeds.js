@@ -13,30 +13,46 @@ class ViewFeed extends Component {
     constructor(){
         super();
         this.state = {
-            isLoading:true,
+            isLoading:false,
             dataContent: []
           }
+          
+          
     }
-   
+    
+    componentWillReceiveProps(){
+        if(this.props.SearchFeedContent){
+            this.setState({
+                dataContent: this.props.SearchFeedContent
+            });
+        }
+      
+    }
+
     componentDidMount(){
-        httpClient.get('/feed', true)
-        .then(data => {
+        
+       if(!this.props.SearchFeedContent){
+            this.setState({
+                isLoading:true
+            })
+            httpClient.get('/feed', true)
+            .then(data => {
             
            
             this.setState({
                 dataContent: data.data
+                })
             })
-        })
-        .catch(err => {
-            console.log(err);
+            .catch(err => {
+            // console.log(err);
             notification.errorHandler(err);
-        })
-        .finally(() => {
+            })
+            .finally(() => {
             this.setState({
                 isLoading:false
-            });
-        })
-
+                });
+            })
+        }
     }
    
     handleDelete(id, i) {
@@ -77,11 +93,13 @@ class ViewFeed extends Component {
     }
 
     render() {
+       
+        let imgUrl = process.env.REACT_APP_IMG_URL;
         let rowContent =  this.state.dataContent.map((item, i) => (
                 <tr key={item._id}>
                     <td>{i+1}</td>
                     <td>{item.title}</td>
-                    <td>{item.image || 'NaN'}</td>
+                    <td><img src={`${imgUrl}/${item.image}`} width='50px' height='50px' alt='feedimage'></img></td>
                     <td>{fullDate(item.createdAt)}</td>
                     <td>
                     <i className="material-icons"><Link to={`/edit-feed/${item._id}`}><button className="btn btn-primary" >edit</button></Link></i>|
