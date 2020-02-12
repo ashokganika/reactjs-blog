@@ -93,22 +93,29 @@ class ViewFeed extends Component {
     }
 
     render() {
-       
+        let actions;
+        let actionHead = this.props.SearchFeedContent
+            ? ''
+            : <th>Actions</th>
         let imgUrl = process.env.REACT_APP_IMG_URL;
-        let rowContent =  this.state.dataContent.map((item, i) => (
+        let rowContent =  this.state.dataContent.map((item, i) => {
+            actions = this.props.SearchFeedContent
+                ? ''
+                : <td>
+                    <i className="material-icons"><Link to={`/edit-feed/${item._id}`}><button className="btn btn-primary" >edit</button></Link></i>|
+                    <i className="material-icons"><button className="btn btn-danger" onClick={() => this.handleDelete(item._id, i)}>delete</button></i>
+                </td>
+            return(
                 <tr key={item._id}>
                     <td>{i+1}</td>
                     <td>{item.title}</td>
                     <td><img src={`${imgUrl}/${item.image}`} width='50px' height='50px' alt='feedimage'></img></td>
                     <td>{fullDate(item.createdAt)}</td>
-                    <td>
-                    <i className="material-icons"><Link to={`/edit-feed/${item._id}`}><button className="btn btn-primary" >edit</button></Link></i>|
-                    <i className="material-icons"><button className="btn btn-danger" onClick={() => this.handleDelete(item._id, i)}>delete</button></i>
-                    </td>
-                    
+                    {actions}
                 </tr>
+            )    
                 
-            ))
+        })
             
         let content = this.state.isLoading 
         ? <Loaders type="Oval" color="#AA00FF" height={100} width={100} />
@@ -122,7 +129,7 @@ class ViewFeed extends Component {
                 <th>Title</th>
                 <th>Image</th>
                 <th>createdAt</th>
-                <th>Actions</th>
+                {actionHead}
                 </tr>
             </thead>
             <tbody>

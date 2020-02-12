@@ -67,9 +67,10 @@ const PublicRoute = ({component:Component, ...rest}) => {
         <Route path={rest.path } render={(props) =>(
             <>
                 <NavBar/>
-                <SideBarComponent>
-                    <Component {...props}/>
-                </SideBarComponent>
+                <SideBarComponent/>
+                <Component {...props}/>
+               
+               
             </>
         )}></Route>
     )

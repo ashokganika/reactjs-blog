@@ -26,8 +26,8 @@ const http = Axios.create({
    ResponseType:'json'
 })
 
-function post(url, data, isSecure){
-    return http.post(url, data, {headers:getHeader(isSecure)})
+function post(url, data, isSecure, params){
+    return http.post(url, data, {headers:getHeader(isSecure), params})
 }
 
 function get(url, isSecure){

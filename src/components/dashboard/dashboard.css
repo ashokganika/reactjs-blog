@@ -1,4 +1,9 @@
-textarea{
-    margin-left: 200px;
+.dashBoard{
+    margin-left:100px;
+    background-color: antiquewhite;
+}
 
+.searchImage{
+    width: 150px;
+    height:150px;
 }
