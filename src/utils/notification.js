@@ -19,13 +19,16 @@ function showWarning(msg){
 function errorHandler(err){
     // console.log(err);
     debugger;
-    let error = err.response || err;
+    let error = err.response || err || err.response.data;
     let msg;
     if(error && error.response && error.response.msg){
         msg = error.response.msg;
     }
     else if(error.msg){
         msg = error.msg;
+    }
+    else{
+        msg = err.response.data.msg;
     }
     showError(msg || 'something wnet wrong');
 }

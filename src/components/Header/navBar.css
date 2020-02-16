@@ -1,10 +1,11 @@
 .navbar{
     list-style-type: none;
-    background-color: rgb(21, 9, 94);
+    background-color: RGB(68, 184, 172);
 
 }
 
 .nav-item{
+    color:  RGB(188, 36, 60);
     display: inline-block;
     
 }

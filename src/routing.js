@@ -10,6 +10,8 @@ import AddFeed from './components/feeds/addfeed/addfeed';
 import ViewFeed from './components/feeds/viewfeed/viewFeeds';
 import EditFeed from './components/feeds/editfeed/editfeed';
 import SearchFeed from './components/feeds/searchfeed';
+import ForgotPassword from './components/forgotpassword/forgotpassword';
+import ResetPassword from './components/resetpassword/resetpassword';
 
 
 // const Home = () => {
@@ -28,10 +30,9 @@ import SearchFeed from './components/feeds/searchfeed';
 const Contact = (props) => {
     console.log(props);
     return (
-        <>
-            <h2>Welcome To Contactpage</h2>
-        </>
-    )
+        <p>hello</p>
+    );
+            
 }
 
 
@@ -51,7 +52,7 @@ const ProtectedRoute = ({component:Component, ...rest}) => {
         <Route path={rest.path} render={(props) => (
            
             localStorage.getItem('token')
-            ? <div><NavBar/><SideBarComponent/><Component {...props}></Component></div>
+            ? <div><NavBar isLoggedIn={true}/><SideBarComponent isLoggedIn={true}/><Component {...props}></Component></div>
             :
             <Redirect to='/login'></Redirect>
         )}>
@@ -66,8 +67,8 @@ const PublicRoute = ({component:Component, ...rest}) => {
     return (
         <Route path={rest.path } render={(props) =>(
             <>
-                <NavBar/>
-                <SideBarComponent/>
+                <NavBar />
+                <SideBarComponent isLoggedIn={false}/>
                 <Component {...props}/>
                
                
@@ -89,10 +90,12 @@ const Routing = () => {
                     <ProtectedRoute path='/view-feed' component={ViewFeed} />
                     <ProtectedRoute path='/edit-feed/:id' component={EditFeed} />
                     <ProtectedRoute path='/search' component={SearchFeed} />
-                    <Route path='/contact' component={Contact}></Route>
-                    <Route path='/register' component={Register}></Route>
-                    <Route path='/login' component={Login}></Route>
-                    <ProtectedRoute component={PageNotFound} />
+                    <PublicRoute path='/contact' component={Contact}></PublicRoute>
+                    <PublicRoute path='/register' component={Register}></PublicRoute>
+                    <PublicRoute path='/login' component={Login}></PublicRoute>
+                    <PublicRoute path='/forgot-password' component={ForgotPassword}/>
+                    <PublicRoute path='/reset-password/:token' component={ResetPassword}/>
+                    <PublicRoute component={PageNotFound} />
                     
                 </Switch>            
             </BrowserRouter>
