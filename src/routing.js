@@ -12,6 +12,7 @@ import EditFeed from './components/feeds/editfeed/editfeed';
 import SearchFeed from './components/feeds/searchfeed';
 import ForgotPassword from './components/forgotpassword/forgotpassword';
 import ResetPassword from './components/resetpassword/resetpassword';
+import Chat from './components/chat/chat';
 
 
 // const Home = () => {
@@ -90,11 +91,12 @@ const Routing = () => {
                     <ProtectedRoute path='/view-feed' component={ViewFeed} />
                     <ProtectedRoute path='/edit-feed/:id' component={EditFeed} />
                     <ProtectedRoute path='/search' component={SearchFeed} />
-                    <PublicRoute path='/contact' component={Contact}></PublicRoute>
-                    <PublicRoute path='/register' component={Register}></PublicRoute>
-                    <PublicRoute path='/login' component={Login}></PublicRoute>
+                    <PublicRoute path='/contact' component={Contact} />
+                    <PublicRoute path='/register' component={Register} />
+                    <PublicRoute path='/login' component={Login} />
                     <PublicRoute path='/forgot-password' component={ForgotPassword}/>
                     <PublicRoute path='/reset-password/:token' component={ResetPassword}/>
+                    <ProtectedRoute path='/chat' component={Chat} />
                     <PublicRoute component={PageNotFound} />
                     
                 </Switch>            

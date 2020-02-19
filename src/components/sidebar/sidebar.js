@@ -13,6 +13,7 @@ export const SideBarComponent = () => {
                             <Link to='/add-feed' className="list-group-item list-group-item-action bg-light">Add-Blog</Link>
                             <Link to='/profile/:name' className="list-group-item list-group-item-action bg-light">Profile</Link>
                             <Link to='/search' className="list-group-item list-group-item-action bg-light">Search</Link>
+                            <Link to='/chat' className="list-group-item list-group-item-action bg-light">Chat</Link>
                             
                         </div>
                     </div>
